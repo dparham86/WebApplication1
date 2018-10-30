@@ -11,7 +11,7 @@
     <h1>Settings</h1>
     <div>
         <div align="center">
-            <form asp-action="SaveSettings" asp-controller="Home" method="post">
+            
                 <div align="center">
                     @for (int i = 0; i < Model.listOfSettings.Count; i++)
                     {
@@ -27,7 +27,7 @@
                         <br/>
                     }
                 </div>
-                <input type="submit" id="submit" name="submit" value="Save" />
+  
             </form>
         </div>
         
