@@ -1,0 +1,51 @@
+﻿@model WebApplication1.Models.UserModel
+@{
+
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<style>
+</style>
+<html>
+<head>
+
+    <title>Login Page</title>
+</head>
+
+<body>
+
+    <div>
+        <div align="center">
+            <img src="~/images/login_stock_photo.jpg" />
+        </div>
+        <form asp-action="MainMenu" asp-controller="Home" method="post">
+            <div align="center">
+                <p>
+                    UserName:
+                </p>
+                @Html.TextBoxFor(m => m.UserName, new { autocomplete = "off" })
+                @if (Model != null)
+                {
+                    if (Model.IsActive == "N")
+                    {
+                        <br/><font color="red">Invalid Login Information.</font>
+                    }
+
+                }
+                <br />
+                <p>
+                    Password:
+                </p>
+                @Html.PasswordFor(m => m.PassWord)<br /><br />
+
+                
+                @Html.ActionLink("Create Account", "SignUp", "Home")
+                <br /><br />
+                <div><input type="button" id="cancelButton" name="cancelButton" value="Cancel" /> &nbsp;&nbsp; &nbsp; &nbsp;  <input type="submit" id="submit" name="submit" value="Login" /> </div>
+            </div>
+            </form>
+    </div>
+</body>
+
+</html>

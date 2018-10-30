@@ -1,0 +1,26 @@
+﻿@model WebApplication1.Models.FavoritesList
+@{
+    ViewData["Title"] = "Favorites";
+    Layout = null;
+}
+
+<h1>Favorites</h1>
+
+
+<div align="center">
+    
+
+
+        @if (Model.listOfMovies.Count == 0)
+        {
+            <h1>There are no movies in your favorites</h1>
+        }
+        else
+        {
+            <table id="animeTable" border="1" width="500" height="500">
+
+            </table>
+        }
+
+  
+</div>

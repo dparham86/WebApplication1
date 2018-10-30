@@ -1,0 +1,36 @@
+﻿@model WebApplication1.Models.SettingsListModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Settings</title>
+</head>
+<body>
+    <h1>Settings</h1>
+    <div>
+        <div align="center">
+            <form asp-action="SaveSettings" asp-controller="Home" method="post">
+                <div align="center">
+                    @for (int i = 0; i < Model.listOfSettings.Count; i++)
+                    {
+                        @Html.HiddenFor(m => m.listOfSettings.ElementAt(i).settingID)
+                        <div>
+                            @Html.DisplayTextFor(m => m.listOfSettings.ElementAt(i).settingText)
+                        </div>
+                        <div>
+                            @Html.CheckBoxFor(m => m.listOfSettings.ElementAt(i).settingsSelected)
+                        </div>
+                        <br />
+                        <br />
+                    }
+                </div>
+                <input type="submit" id="submit" name="submit" value="Save" />
+            </form>
+        </div>
+        
+    </div>
+        
+</body>
+</html>

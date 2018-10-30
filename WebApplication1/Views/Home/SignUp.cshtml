@@ -1,0 +1,72 @@
+﻿@model WebApplication1.Models.UserModel
+@{
+    ViewData["Title"] = "SignUp";
+}
+
+@{ 
+    Layout = null;
+}
+<h2>SignUp</h2>
+
+<!DOCTYPE html>
+<style>
+</style>
+<html>
+<head>
+
+    <title>Sign Up</title>
+</head>
+
+<body>
+
+    <div align="center">
+
+        <form asp-action="CreateUser" asp-controller="Home" method="post">
+            <div align="center">
+                <p>
+                    UserName:
+                </p>
+                @Html.TextBoxFor(m => m.UserName, new { autocomplete = "off" })
+                <br />
+                <p>
+                    Password:
+                </p>
+                @Html.PasswordFor(m => m.PassWord)
+                <br />
+                <p>
+                    Email:
+                </p>
+                @Html.TextBoxFor(m => m.Email, new { autocomplete = "off" })
+                <br />
+                <p>
+                    Address:
+                </p>
+                @Html.TextBoxFor(m => m.StreetAddress, new { autocomplete = "off" })
+                <br />
+                <p>
+                    ZipCode:
+                </p>
+                @Html.TextBoxFor(m => m.ZipCode, new { autocomplete = "off" })
+                <br />
+                <p>
+                    Phone Number:
+                </p>
+                @Html.TextBoxFor(m => m.PhoneNumber, new { autocomplete = "off" })
+                <br />
+                <p>
+                    Payment Method:
+                </p>
+                @Html.DropDownListFor(m => m.PaymentMethod,  new SelectList(Model.PayMethodList, "Value", "Text"))
+                <br />
+                <p>
+                    Credit Card No.:
+                </p>
+                @Html.TextBoxFor(m => m.CCNumber, new { autocomplete = "off" })
+                <br />
+                <div><input type="button" id="cancelButton" name="cancelButton" value="Cancel" /> &nbsp;&nbsp; &nbsp; &nbsp;  <input type="submit" id="submit" name="submit" value="Submit" /> </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,130 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
+*@
+@{
+}
+<!DOCTYPE html>
+    
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#animeTable").hide();
+            $('#dramaTable').hide();
+            $('#horrorTable').hide();
+        });
+
+        function showThisTable(tableName) {
+            if (tableName == "anime") {
+                $("#animeTable").show();
+                $('#dramaTable').hide();
+                $('#horrorTable').hide();
+            }
+            else if (tableName == "drama") {
+                $("#animeTable").hide();
+                $('#dramaTable').show();
+                $('#horrorTable').hide();
+            }
+            else if (tableName == "horror") {
+                $("#animeTable").hide();
+                $('#dramaTable').hide();
+                $('#horrorTable').show();
+            }
+            else {
+                $("#animeTable").hide();
+                $('#dramaTable').hide();
+                $('#horrorTable').hide();
+            }
+          
+        }
+    </script>
+    <title>Selections</title>
+</head>
+<body>
+    <br/>
+    <br/>
+    <select id="dropdowntipo" onchange="showThisTable(this.value);">
+        <option value="">---Select A Genre---</option>
+        <option value="anime">Anime</option>
+        <option value="drama">Drama</option>
+        <option value="horror">Horror</option>
+        @*<option value="sci-Fi">Sci-Fi</option>
+        <option value="sports">Sports</option>
+        <option value="romance">Romance</option>
+        <option value="animated">Animated</option>
+        <option value="supernatural">Supernatural</option>
+        <option value="comedy">Comedy</option>*@
+    </select>
+    <div align="center">
+        <table id="animeTable" border="1" width="300" height="300">
+            <tr>
+                <td>DBZ</td>
+                <td>Yu Yu Hakusho</td>
+                <td>Sailor Moon</td>
+            </tr>
+        </table>
+        <table id="dramaTable" border="1" width="300" height="300">
+            <tr>
+                <td>Young and the Restless</td>
+                <td>Bold and Beautiful</td>
+                <td>Star Man 2018</td>
+            </tr>
+        </table>
+        <table id="horrorTable" border="1" width="300" height="300">
+            <tr>
+                <td>Insidious</td>
+                <td>Get Out</td>
+                <td>Human Centipede</td>
+            </tr>
+        </table>
+        <table id="sciFiTable">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+        <table id="sportsTable">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+        <table id="romanceTable">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+        <table id="animatedTable">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+        <table id="supernaturalTable">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+        <table id="comedyTable">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+    @*<iframe width="300" height="300" src="https://www.youtube.com/embed/DI7imXBhC4A?autoplay=1&showinfo=0&controls=0" frameborder="1" allow="autoplay; autoplay=" 1" encrypted-media" allowfullscreen></iframe>
+        <iframe width="1280" height="720" src="https://www.youtube.com/embed/0452RI7CET8?autoplay=1&showinfo=0&controls=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>*@
+</body>
+
+        </html>
