@@ -4,8 +4,22 @@
     Layout = null;
 }
 <!DOCTYPE html>
-<style>
-</style>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $(function () {
+       // $("#dialog").hide();
+        $("#dialog").dialog({
+            autoOpen: false, modal: true, show: "blind", hide: "blind"
+        });
+    });
+
+    function openit() {
+        $("#dialog").show();
+    }
+</script>
 <html>
 <head>
     <title>Browse</title>
@@ -14,18 +28,29 @@
 <body>
     <h1>Browse</h1>
     <div align="center">
-                <table id="movieTable" border="1" width="500" height="500">
-                    <tr>
-                        @for (int i = 0; i < Model.listOfMovies.Count; i++)
-                        {
+        <div id="dialog" title="Trailer" hidden="hidden">
+            <iframe width="1280" height="720" src="https://www.youtube.com/embed/aOPJ6y3HWII?autoplay=0&controls=0" frameborder="1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+       
+            <input type="button" /><input type="button" />
+  </div>
+        <table id="movieTable" border="1" width="500" height="500">
+            <tr>
+                @for (int i = 0; i < Model.listOfMovies.Count; i++)
+                {
 
-                            <td>@Html.DisplayFor(m => m.listOfMovies.ElementAt(i).movieName)</td>
+                    if (Model.listOfMovies.ElementAt(i).movieName == "Dragonball Z")
+                    {
+                        <td id="dbz" onclick="openit();"><img src="~/images/Dragonball-z-anime-0.jpg"></td>
+                    }
+                    else
+                    {
+                        <td>@Html.DisplayFor(m => m.listOfMovies.ElementAt(i).movieName)</td>
+                    }
 
-                        }
-                    </tr>
-                </table>
-            }
-        }
+
+                }
+            </tr>
+        </table>
     </div>
 </body>
 </html>

@@ -18,3 +18,19 @@ function showThisTable(tableName) {
     })
     //$('#' + tableName + 'table').show();
 };
+
+$(function() {
+    $('input:checkbox').click(function() {
+        var $this = $(this);
+        $.post(
+            '/Home/SaveSettings', 
+            {
+                name: $this.attr('name'),
+                value: $this.val()
+            }, 
+            function(data) {
+                alert('success');
+            }
+        );
+    });
+});
