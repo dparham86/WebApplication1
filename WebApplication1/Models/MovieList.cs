@@ -8,5 +8,7 @@ namespace WebApplication1.Models
     public class MovieList
     {
         public List<Movie> listOfMovies { get; set; }
+
+        public string autoPlay { get; set; }
     }
 }

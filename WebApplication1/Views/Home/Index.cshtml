@@ -5,46 +5,85 @@
 }
 
 <!DOCTYPE html>
-<style>
-</style>
 <html>
 <head>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#menu li").hover(function () {
+                $(".dropdown-menu", this).slideDown(100);
+            }, function () {
+                $(".dropdown-menu", this).stop().slideUp(100);
+            });
+        })
+    </script>
+    <style>
+        #menu a {
+            text-decoration: none;
+            color: #333;
+            font-family: sans-serif;
+            padding: 5px;
+        }
 
+        #menu ul li {
+            display: inline;
+        }
+
+        .dropdown-menu {
+            display: none;
+        }
+    </style>
     <title>Login Page</title>
 </head>
 
 <body>
+    @*<div id="menu">
+            <ul>
+                <li><a href="#">Link One</a></li>
+                <li>
+                    <a href="#">Link Two</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Dropdown Link</a></li>
+                        <li><a href="#">Another Dropdown Link</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>*@
+    @*<video width="400" controls>
+            <source src="C:\Users\dparh\Desktop\Higurashi_no_Nakukoroni_01.mp4"  type="video/mp4;codecs="avc1.42E01E, mp4a.40.2">
 
-    <div>
+            Your browser does not support HTML5 video.
+        </video>*@
+
+    <div align="center">
+        <img src="~/images/login_stock_photo.jpg" />
+    </div>
+    <form asp-action="MainMenu" asp-controller="Home" method="post">
         <div align="center">
-            <img src="~/images/login_stock_photo.jpg" />
-        </div>
-        <form asp-action="MainMenu" asp-controller="Home" method="post">
-            <div align="center">
-                <p>
-                    UserName:
-                </p>
-                @Html.TextBoxFor(m => m.UserName, new { autocomplete = "off" })
-                @if (Model != null)
+            <p>
+                UserName:
+            </p>
+            @Html.TextBoxFor(m => m.UserName, new { autocomplete = "off" })
+            @if (Model != null)
+            {
+                if (Model.IsActive == "N")
                 {
-                    if (Model.IsActive == "N")
-                    {
-                        <br/><font color="red">Invalid Login Information.</font>
-                    }
-
+                    <br /><font color="red">Invalid Login Information.</font>
                 }
-                <br />
-                <p>
-                    Password:
-                </p>
-                @Html.PasswordFor(m => m.PassWord)<br /><br />
 
-                
-                @Html.ActionLink("Create Account", "SignUp", "Home")
-                <br /><br />
-                <div><input type="button" id="cancelButton" name="cancelButton" value="Cancel" /> &nbsp;&nbsp; &nbsp; &nbsp;  <input type="submit" id="submit" name="submit" value="Login" /> </div>
-            </div>
-            </form>
+            }
+            <br />
+            <p>
+                Password:
+            </p>
+            @Html.PasswordFor(m => m.PassWord)<br /><br />
+
+
+            @Html.ActionLink("Create Account", "SignUp", "Home")
+            <br /><br />
+            <div><input type="button" id="cancelButton" name="cancelButton" value="Cancel" /> &nbsp;&nbsp; &nbsp; &nbsp;  <input type="submit" id="submit" name="submit" value="Login" /> </div>
+        </div>
+    </form>
     </div>
 </body>
 

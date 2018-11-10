@@ -13,6 +13,8 @@ namespace WebApplication1.Models
 
         public int movieGenreID { get; set; }
 
-        //public string genreName { get; set; }
+        public string MovieTrailerURL { get; set; }
+
+        public string movieImageName { get; set; }
     }
 }

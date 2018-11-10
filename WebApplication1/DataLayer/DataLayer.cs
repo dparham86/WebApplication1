@@ -46,6 +46,58 @@ namespace WebApplication1
             }
         }
 
+        public void SaveToFavorites(int movieID)
+        {
+            string connetionString = null;
+            SqlConnection cnn;
+            connetionString = "Data Source=DESKTOP-9A0CTF1\\SQLEXPRESS;Initial Catalog=PrototypeDB;Integrated Security=SSPI;";
+            cnn = new SqlConnection(connetionString);
+            try
+            {
+                cnn.Open();
+                using (var command = new SqlCommand("UPDATE FavoritesList SET movieID = @movieID WHERE MovieID = @movieID IF @@ROWCOUNT = 0 INSERT INTO FavoritesList(movieID, userID) VALUES (@movieID, @userID)", cnn))
+                {
+                    command.Parameters.AddWithValue("@movieID", movieID);
+                    command.Parameters.AddWithValue("@userID", "Yuri01");
+                    command.ExecuteNonQuery();
+
+                    //result = command.ExecuteNonQuery();
+                }
+                //MessageBox.Show("Connection Open ! ");
+                cnn.Close();
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("Can not open connection ! ");
+            }
+        }
+
+        public void DeleteFromFavorites(int movieID)
+        {
+            string connetionString = null;
+            SqlConnection cnn;
+            connetionString = "Data Source=DESKTOP-9A0CTF1\\SQLEXPRESS;Initial Catalog=PrototypeDB;Integrated Security=SSPI;";
+            cnn = new SqlConnection(connetionString);
+            try
+            {
+                cnn.Open();
+                using (var command = new SqlCommand("DELETE FavoritesList WHERE movieID = @movieID AND userID = @userID", cnn))
+                {
+                    command.Parameters.AddWithValue("@movieID", movieID);
+                    command.Parameters.AddWithValue("@userID", "Yuri01");
+                    command.ExecuteNonQuery();
+
+                    //result = command.ExecuteNonQuery();
+                }
+                //MessageBox.Show("Connection Open ! ");
+                cnn.Close();
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("Can not open connection ! ");
+            }
+        }
+
         public void DeactivateMember(UserModel UserModel)
         {
             string connetionString = null;
@@ -79,16 +131,28 @@ namespace WebApplication1
             try
             {
                 cnn.Open();
-                string building = "";
-               
-                using (var command = new SqlCommand("UPDATE Settings SET IsActive = 'N' WHERE userName = @userName", cnn))
-                {
-                    //command.Parameters.AddWithValue("@userName", UserModel.UserName);
 
-                    //command.ExecuteNonQuery();
+                for (int i = 0; i < settingsListModel.listOfSettings.Count(); i++)
+                {
+                    using (var command = new SqlCommand("UPDATE Settings SET settingActive = @settingActive WHERE settingID = @settingID", cnn))
+                    {
+                        command.Parameters.AddWithValue("@settingID", settingsListModel.listOfSettings.ElementAt(i).settingID);
+                        if (settingsListModel.listOfSettings.ElementAt(i).settingsSelected)
+                        {
+                            command.Parameters.AddWithValue("@settingActive", "Y");
+                        }
+                        else
+                        {
+                            command.Parameters.AddWithValue("@settingActive", "N");
+                        }
+                        
+                        command.ExecuteNonQuery();
+                    }
+
+                    
                 }
-                //MessageBox.Show("Connection Open ! ");
                 cnn.Close();
+
             }
             catch (Exception ex)
             {
@@ -207,7 +271,7 @@ namespace WebApplication1
             try
             {
                 cnn.Open();
-                using (var command = new SqlCommand("SELECT * FROM FavoritesList", cnn))
+                using (var command = new SqlCommand("  SELECT *   FROM FavoritesList AS f   INNER JOIN MovieList AS M ON f.movieID = M.movieID", cnn))
                 {
                     //command.Parameters.AddWithValue("@userName", UserName);
                     SqlDataAdapter da = new SqlDataAdapter(command);
@@ -228,6 +292,8 @@ namespace WebApplication1
             return dataTable;
         }
 
+
+
         public DataTable getAllSettings()
         {
             string connetionString = null;
@@ -239,6 +305,37 @@ namespace WebApplication1
             {
                 cnn.Open();
                 using (var command = new SqlCommand("SELECT * FROM Settings", cnn))
+                {
+                    //command.Parameters.AddWithValue("@userName", UserName);
+                    SqlDataAdapter da = new SqlDataAdapter(command);
+                    // this will query your database and return the result to your datatable
+                    da.Fill(dataTable);
+                    //nn.Close();
+                    da.Dispose();
+
+                }
+
+                //MessageBox.Show("Connection Open ! ");
+                //cnn.Close();
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("Can not open connection ! ");
+            }
+            return dataTable;
+        }
+
+        public DataTable getAutoPlaySetting()
+        {
+            string connetionString = null;
+            SqlConnection cnn;
+            connetionString = "Data Source=DESKTOP-9A0CTF1\\SQLEXPRESS;Initial Catalog=PrototypeDB;Integrated Security=SSPI;";
+            DataTable dataTable = new DataTable();
+            cnn = new SqlConnection(connetionString);
+            try
+            {
+                cnn.Open();
+                using (var command = new SqlCommand("SELECT settingActive FROM Settings WHERE settingID = 1", cnn))
                 {
                     //command.Parameters.AddWithValue("@userName", UserName);
                     SqlDataAdapter da = new SqlDataAdapter(command);

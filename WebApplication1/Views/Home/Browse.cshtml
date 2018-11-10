@@ -4,53 +4,169 @@
     Layout = null;
 }
 <!DOCTYPE html>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script>
-    $(function () {
-       // $("#dialog").hide();
-        $("#dialog").dialog({
-            autoOpen: false, modal: true, show: "blind", hide: "blind"
-        });
-    });
 
-    function openit() {
-        $("#dialog").show();
-    }
-</script>
 <html>
 <head>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    @*<link rel="stylesheet" href="/resources/demos/style.css">*@
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+
+
+        $(document).ready(function () {
+            //var url = "";
+            $('div#thedialog').dialog({ autoOpen: false })
+            $('#thelink').click(function () { $('div#thedialog').dialog('open'); });
+            $('.a').click(function () {
+                $('#dialog').dialog("option", "title", $("#movieName").val() + "  Trailer");
+                //$('#dialog').title = $("#movieName").val(movieName);
+                $('#dialog').dialog('open');
+
+
+            });
+            $('#dialog').on('dialogclose', function (event) {
+                var iframes = document.querySelectorAll('iframe');
+                if (iframes.length != 0)
+                iframes[0].remove();
+            });
+
+            $('#closeButton').click(function () { $('#dialog').dialog('close'); });
+          
+            $('#playMovieButton').click(function () {
+                $('#dialog').dialog('close');
+                $('#dialogMovie').dialog("option", "title", $("#movieName").val());
+                if ($('#movieName').val() == "Higurashi No Naku Koro Ni") {
+                    if ($('#autoPlaySetting').val() == 'Y') {
+                        $('#dialogMovie').append("<video width='1280' height='720' title=" + $("#movieName").val() + "id = 'moviePlayer' controls autoplay >" +
+                            "<source src='C:\\Users\\dparh\\Desktop\\Higurashi_no_Nakukoroni_01.mp4' type='video/mp4'>" +
+                            "<source src='movie.ogg' type='video/ogg'> Your browser does not support the video tag.</video>");
+                    }
+                    else {
+                        $('#dialogMovie').append("<video width='1280' height='720' title=" + $("#movieName").val() + "id = 'moviePlayer' controls >" +
+                            "<source src='C:\\Users\\dparh\\Desktop\\Higurashi_no_Nakukoroni_01.mp4' type='video/mp4'>" +
+                            "<source src='movie.ogg' type='video/ogg'> Your browser does not support the video tag.</video>");
+                    }
+
+                }
+                else {
+                    if ($('#autoPlaySetting').val() == 'Y') {
+                        $('#dialogMovie').append("<video width='1280' height='720' title=" + $("#movieName").val() + "id = 'moviePlayer' controls autoplay>" +
+                            "<source src='C:\\Users\\dparh\\Desktop\\Kikoushi_Enma_-_01.mp4' type='video/mp4'>" +
+                            "<source src='movie.ogg' type='video/ogg'> Your browser does not support the video tag.</video>");
+                    }
+                    else {
+                        $('#dialogMovie').append("<video width='1280' height='720' title=" + $("#movieName").val() + "id = 'moviePlayer' controls >" +
+                            "<source src='C:\\Users\\dparh\\Desktop\\Kikoushi_Enma_-_01.mp4' type='video/mp4'>" +
+                            "<source src='movie.ogg' type='video/ogg'> Your browser does not support the video tag.</video>");
+                    }
+
+                }
+
+
+                $('#dialogMovie').dialog('open');
+            });
+
+            $(function () {
+                $('#dialog').dialog({
+                    autoOpen: false,
+                    width: 1300,
+                    height: 800,
+                    resizable: false,
+                    modal: true
+                });
+
+                $('#dialogMovie').dialog({
+                    autoOpen: false,
+                    width: 1300,
+                    height: 800,
+                    resizable: false,
+                    modal: true
+                });
+
+                $('#trailerButton').click(function () {
+                    //$('#dialog').dialog({ title: $("#movieName").val(movieName); });
+                    //$("#dialog").text = ;
+                   
+                    $('#dialog').append($("#urlLink").val());
+                    
+                    
+
+                });
+
+                $('.modal').click(function () {
+                    $('#dialog').load(this.href, function () {
+                        $(this).dialog('open');
+                    });
+                    return false;
+                });
+            });
+        });
+
+
+
+        function openit(tagId,movieName, movieID, autoPlaySetting) {
+          
+            $("#urlLink").val("<iframe id='cartoonVideo' width='1280' height='720' src='" + tagId + "' frameborder='1'</iframe>");
+            $("#movieName").val(movieName);
+            $("#movieIDHidden").val(movieID);
+            $("#autoPlaySetting").val(autoPlaySetting);
+        }
+
+
+     
+
+    </script>
     <title>Browse</title>
 </head>
 
 <body>
     <h1>Browse</h1>
+    <input type="hidden" id="urlLink" />
+    <input type="hidden" id="movieName" />
+    <input type ="hidden" id="autoPlaySetting"/>
     <div align="center">
-        <div id="dialog" title="Trailer" hidden="hidden">
-            <iframe width="1280" height="720" src="https://www.youtube.com/embed/aOPJ6y3HWII?autoplay=0&controls=0" frameborder="1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-       
-            <input type="button" /><input type="button" />
-  </div>
-        <table id="movieTable" border="1" width="500" height="500">
+
+        <div id="dialog" title="Trailer">
+            <form asp-action="SaveToFavorites" asp-controller="Home" method="post">
+                @Html.HiddenFor(m => m.listOfMovies.ElementAt(0).movieID, new { id = "movieIDHidden" })
+                <input type="button" id="closeButton" value="Close" />
+
+                <input type="button" id="trailerButton" value="Play Trailer" />
+
+                <input type="submit" id="addToFavorites" value="Add To Favorites" />
+
+                <input type="button" id="playMovieButton" value="Play Movie" />
+
+            </form>
+        </div>
+
+        <div id="dialogMovie" title="Movie">
+            
+
+        </div>
+
+        <table id="movieTable" border="1">
             <tr>
-                @for (int i = 0; i < Model.listOfMovies.Count; i++)
+                @for (int i = 0; i < 9; i++)
                 {
 
-                    if (Model.listOfMovies.ElementAt(i).movieName == "Dragonball Z")
-                    {
-                        <td id="dbz" onclick="openit();"><img src="~/images/Dragonball-z-anime-0.jpg"></td>
-                    }
-                    else
-                    {
-                        <td>@Html.DisplayFor(m => m.listOfMovies.ElementAt(i).movieName)</td>
-                    }
+                    <td style="height:auto; max-width:300px;overflow:hidden; padding:25px; margin:75px; " class="a" onclick="openit('@Model.listOfMovies.ElementAt(i).MovieTrailerURL', '@Model.listOfMovies.ElementAt(i).movieName', '@Model.listOfMovies.ElementAt(i).movieID', '@Model.autoPlay')"><img src="~/images/@Model.listOfMovies.ElementAt(i).movieImageName" /></td>
+                }
 
+            </tr>
+            <tr>
+                @for (int i = Model.listOfMovies.Count - 2; i < Model.listOfMovies.Count; i++)
+                {
 
+                    <td style="height:auto; max-width:300px;overflow:hidden; padding:25px; margin:75px; " class="a" onclick="openit('@Model.listOfMovies.ElementAt(i).MovieTrailerURL', '@Model.listOfMovies.ElementAt(i).movieName', '@Model.listOfMovies.ElementAt(i).movieID', '@Model.autoPlay')"><img src="~/images/@Model.listOfMovies.ElementAt(i).movieImageName" /></td>
                 }
             </tr>
         </table>
+
+
+
     </div>
+
 </body>
 </html>

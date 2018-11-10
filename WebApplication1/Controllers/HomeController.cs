@@ -50,11 +50,27 @@ namespace WebApplication1.Controllers
                 
         }
 
-        
+        [HttpPost]
+        public IActionResult SaveToFavorites(Movie MovieModel)
+        {
+            DataLayer dl = new DataLayer();
+            dl.SaveToFavorites(MovieModel.movieID);
+            return View("Favorites",getAllFavorites());
+        }
+
+        [HttpPost]
+        public IActionResult DeleteFromFavorites(Movie MovieModel)
+        {
+            DataLayer dl = new DataLayer();
+            dl.DeleteFromFavorites(MovieModel.movieID);
+            return View("Favorites", getAllFavorites());
+        }
+
         public MovieList getAllMovies()
         {
             MovieList movieListModel = new MovieList();
             movieListModel.listOfMovies = new List<Movie>();
+
             DataLayer dl = new DataLayer();
             DataTable dt = dl.getAllMovies();
             for (int i = 0; i < dt.Rows.Count; i++)
@@ -63,9 +79,22 @@ namespace WebApplication1.Controllers
                 movieModel.movieID = int.Parse(dt.Rows[i]["movieID"].ToString());
                 movieModel.movieName = dt.Rows[i]["movieName"].ToString();
                 movieModel.movieGenreID = int.Parse(dt.Rows[i]["movieGenreID"].ToString());
-                //movieModel.genreName = dt.Rows[i]["genreName"].ToString();
+                movieModel.MovieTrailerURL = dt.Rows[i]["MovieTrailerURL"].ToString();
+                movieModel.movieImageName = dt.Rows[i]["movieImageName"].ToString();
                 //paymentMethodList.Add(newItem);
                 movieListModel.listOfMovies.Add(movieModel);
+            }
+
+            DataTable dt2 = dl.getAutoPlaySetting();
+            for (int i = 0; i < dt2.Rows.Count; i++)
+            {
+                //Movie movieModel = new Movie();
+                //paymentMethodList.Add(newItem);
+                
+                //movieListModel.listOfMovies.Add(movieModel);
+                movieListModel.autoPlay = dt2.Rows[i]["settingActive"].ToString();
+              
+
             }
 
             return movieListModel;
@@ -83,9 +112,24 @@ namespace WebApplication1.Controllers
                 movieModel.movieID = int.Parse(dt.Rows[i]["movieID"].ToString());
                 movieModel.movieName = dt.Rows[i]["movieName"].ToString();
                 movieModel.movieGenreID = int.Parse(dt.Rows[i]["movieGenreID"].ToString());
+                movieModel.MovieTrailerURL = dt.Rows[i]["MovieTrailerURL"].ToString();
+                movieModel.movieImageName = dt.Rows[i]["movieImageName"].ToString();
+
                 //movieModel.genreName = dt.Rows[i]["genreName"].ToString();
                 //paymentMethodList.Add(newItem);
                 listOfFavorites.listOfMovies.Add(movieModel);
+            }
+
+            DataTable dt2 = dl.getAutoPlaySetting();
+            for (int i = 0; i < dt2.Rows.Count; i++)
+            {
+                //Movie movieModel = new Movie();
+                //paymentMethodList.Add(newItem);
+
+                //movieListModel.listOfMovies.Add(movieModel);
+                listOfFavorites.autoPlay = dt2.Rows[i]["settingActive"].ToString();
+
+
             }
 
             return listOfFavorites;
@@ -128,9 +172,11 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public void SaveSettings(SettingsListModel SettingsListModel)
+        public IActionResult SaveSettings(SettingsListModel SettingsModel)
         {
             DataLayer dl = new DataLayer();
+            dl.SaveSettings(SettingsModel);
+            return View("Settings", SettingsModel);
 
         }
 
