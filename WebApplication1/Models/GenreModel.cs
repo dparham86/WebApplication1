@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 
 namespace WebApplication1.Models
 {
-    public class SettingsListModel
+    public class GenreModel
     {
-        public List<SettingsModel> listOfSettings { get; set; }
 
-        public string errorFree { get; set; }
+        public int movieGenreID { get; set; }
+
+        public string genreName { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -70,6 +71,7 @@ namespace WebApplication1.Controllers
         {
             MovieList movieListModel = new MovieList();
             movieListModel.listOfMovies = new List<Movie>();
+            movieListModel.listOfGenres = new List<GenreModel>();
 
             DataLayer dl = new DataLayer();
             DataTable dt = dl.getAllMovies();
@@ -81,20 +83,22 @@ namespace WebApplication1.Controllers
                 movieModel.movieGenreID = int.Parse(dt.Rows[i]["movieGenreID"].ToString());
                 movieModel.MovieTrailerURL = dt.Rows[i]["MovieTrailerURL"].ToString();
                 movieModel.movieImageName = dt.Rows[i]["movieImageName"].ToString();
-                //paymentMethodList.Add(newItem);
                 movieListModel.listOfMovies.Add(movieModel);
             }
 
             DataTable dt2 = dl.getAutoPlaySetting();
             for (int i = 0; i < dt2.Rows.Count; i++)
             {
-                //Movie movieModel = new Movie();
-                //paymentMethodList.Add(newItem);
-                
-                //movieListModel.listOfMovies.Add(movieModel);
                 movieListModel.autoPlay = dt2.Rows[i]["settingActive"].ToString();
-              
+            }
 
+            DataTable dt3 = dl.getGenreNames();
+            for (int i = 0; i < dt3.Rows.Count; i++)
+            {
+                GenreModel genreModel = new GenreModel();
+                genreModel.genreName = dt3.Rows[i]["genreName"].ToString();
+                genreModel.movieGenreID = int.Parse(dt3.Rows[i]["genreID"].ToString());
+                movieListModel.listOfGenres.Add(genreModel);
             }
 
             return movieListModel;
@@ -176,6 +180,7 @@ namespace WebApplication1.Controllers
         {
             DataLayer dl = new DataLayer();
             dl.SaveSettings(SettingsModel);
+            SettingsModel.errorFree = "no error";
             return View("Settings", SettingsModel);
 
         }

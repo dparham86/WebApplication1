@@ -1,39 +1,45 @@
 ﻿@model WebApplication1.Models.SettingsListModel
 @{
-    Layout = null;
+    
 }
 <!DOCTYPE html>
 <html>
 <head>
-    <script type="text/javascript" src="@Url.Content("~/Scripts/app.js")"></script>
-    <title>Settings</title>
+   
+
+        <title>Settings</title>
 </head>
 <body>
     <h1>Settings</h1>
-    <div>
-        <form asp-action="SaveSettings" asp-controller="Home" method="post">
+    <form asp-action="SaveSettings" asp-controller="Home" method="post">
+        <div align="center">
             <div align="center">
-                <div align="center">
-                    @for (int i = 0; i < Model.listOfSettings.Count; i++)
-                    {
-                        <input asp-for="listOfSettings[i].settingID" type="hidden" />
-                        <input asp-for="listOfSettings[i].settingText" type="hidden" />
+                @for (int i = 0; i < Model.listOfSettings.Count; i++)
+                {
+                    <input asp-for="listOfSettings[i].settingID" type="hidden" />
+                    <input asp-for="listOfSettings[i].settingText" type="hidden" />
 
-                        <div>
-                            @Html.DisplayTextFor(m => m.listOfSettings[i].settingText)
-                        </div>
-                        <div>
-                            <input asp-for="listOfSettings[i].settingsSelected" type="checkbox" />
-                        </div>
-                        <br />
-                        <br />
-                        <br />
-                    }
-                </div>
-                <button type="submit" value="Yes">Yes</button>
+                    <div>
+                        @Html.DisplayTextFor(m => m.listOfSettings[i].settingText)
+                    </div>
+                    <div>
+                        <input asp-for="listOfSettings[i].settingsSelected" type="checkbox" />
+                    </div>
+                    <br />
+                    <br />
+                    <br />
+                }
             </div>
-        </form>
-</div>
-        
+            <button type="submit" value="Yes">Submit</button>
+        </div>
+    </form>
+
+    <div align="center">
+        @if(@Model.errorFree != null)
+        {
+            <h3 style="color:red">Setting Saved Successfully!</h3>
+        }
+    </div>
+
 </body>
 </html>
