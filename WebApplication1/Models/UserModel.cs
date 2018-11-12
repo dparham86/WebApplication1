@@ -34,6 +34,8 @@ namespace WebApplication1.Models
         public MovieList listOfMovies { get; set; }
 
         public FavoritesList listOfFavorites { get; set; }
+
+        public List<UserModel> listOfFriends { get; set; }
         
     }
 }

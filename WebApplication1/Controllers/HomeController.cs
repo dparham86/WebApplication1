@@ -41,6 +41,8 @@ namespace WebApplication1.Controllers
             {
                 //UserModel.listOfFavorites = getAllFavorites();
                 //UserModel.listOfMovies = getAllMovies();
+                UserModel.listOfFriends = new List<UserModel>();
+                UserModel.listOfFriends = getFriendsList(UserModel);
                 return View("MainMenu", UserModel);
             }
             else
@@ -49,6 +51,24 @@ namespace WebApplication1.Controllers
                 return View("Index", UserModel);
             }
                 
+        }
+
+        private List<UserModel> getFriendsList(UserModel UserModel)
+        {
+            List<UserModel> listOfFriends = new List<UserModel>();
+            DataLayer dl = new DataLayer();
+            DataTable dt = dl.getFriends(1);
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                UserModel userModel = new UserModel();
+                userModel.UserName = dt.Rows[i]["userName"].ToString();
+                //userModel.listOfFriends.listOfMovies.Add(movieModel);
+                listOfFriends.Add(userModel);
+               
+            }
+
+            return listOfFriends;
+
         }
 
         [HttpPost]
@@ -138,7 +158,13 @@ namespace WebApplication1.Controllers
 
             return listOfFavorites;
         }
-
+        public IActionResult Theatre(UserModel UserModel)
+        {
+            DataLayer dl = new DataLayer();
+            UserModel.listOfFriends = new List<UserModel>();
+            UserModel.listOfFriends = getFriendsList(UserModel);
+            return View("TheatreView", UserModel);
+        }
 
         [HttpPost]
         public IActionResult DeactivateMember(UserModel UserModel)

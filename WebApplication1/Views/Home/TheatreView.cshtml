@@ -1,0 +1,24 @@
+﻿@model WebApplication1.Models.UserModel
+@{
+    ViewData["Title"] = "Theatre";
+}
+
+<h2>Theatre</h2>
+
+<table>
+    <tr align="center"></tr>
+    <tr>
+
+        @for (int i = 0; i < Model.listOfFriends.Count; i++)
+        {
+            <tr><td>@Html.DisplayFor(x=>x.listOfFriends.ElementAt(i).UserName)</td></tr><br/><br/>
+        }
+    </tr>
+    </table>
+    <video width='1280' height='720' controls >" +
+       "<source src='C:\Users\dparh\Desktop\Higurashi_no_Nakukoroni_01.mp4' type='video/mp4'>" +
+       "<source src='movie.ogg' type='video/ogg'> Your browser does not support the video tag.</video>
+
+<div><textarea id="chatArea" style="width:1200px; height:200px;"></textarea></div>
+
+<div><input type="text" id="inputArea" style="width:1000px; height:25px;"/></div><button id="sendButton">Send</button>
