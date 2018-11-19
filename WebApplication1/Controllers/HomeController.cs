@@ -36,14 +36,32 @@ namespace WebApplication1.Controllers
         public IActionResult MainMenu(UserModel UserModel)
         {
             DataLayer dl = new DataLayer();
+            UserModel acceptedUserModel = getAllUserData(UserModel.UserName);
             //bool UserExists = false;
             if (dl.CheckForExistingUser(UserModel.UserName, UserModel.PassWord))
-            {
-                //UserModel.listOfFavorites = getAllFavorites();
-                //UserModel.listOfMovies = getAllMovies();
-                UserModel.listOfFriends = new List<UserModel>();
-                UserModel.listOfFriends = getFriendsList(UserModel);
-                return View("MainMenu", UserModel);
+            {              
+                if(acceptedUserModel.contentAccess == "All")
+                {
+                    return View("ContentSelectionView", acceptedUserModel);
+                }
+                else if(acceptedUserModel.contentAccess == "Video")
+                {
+
+                    UserModel.listOfFriends = new List<UserModel>();
+
+                    UserModel.listOfFriends = getFriendsList(acceptedUserModel);
+
+                    return View("MainMenu", UserModel);
+                }
+                else
+                {
+
+                    UserModel.listOfFriends = new List<UserModel>();
+
+                    UserModel.listOfFriends = getFriendsList(UserModel);
+
+                    return View("MainMenu", acceptedUserModel);
+                }
             }
             else
             {
@@ -51,6 +69,52 @@ namespace WebApplication1.Controllers
                 return View("Index", UserModel);
             }
                 
+        }
+
+        [HttpPost]
+        public IActionResult goToContentMainMenu(UserModel UserModel, string buttonValueId)
+        {
+            DataLayer dl = new DataLayer();
+            UserModel acceptedUserModel = getAllUserData(UserModel.UserName);
+            acceptedUserModel.listOfFriends = new List<UserModel>();
+            acceptedUserModel.listOfFriends = getFriendsList(acceptedUserModel);
+            acceptedUserModel.contentAccess = buttonValueId;
+            if (acceptedUserModel.contentAccess == "Video")
+            {
+                return View("MainMenu", acceptedUserModel);
+            }
+            else
+            {
+                return View("MainMenuComicView", acceptedUserModel);
+            }
+            
+
+        }
+
+        private UserModel getAllUserData(string userName)
+        {
+            DataLayer dl = new DataLayer();
+            UserModel userModel = new UserModel();
+            DataTable dt = dl.getAllUserData(userName);
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                
+                userModel.UserId = int.Parse(dt.Rows[i]["userId"].ToString());
+                userModel.UserName = dt.Rows[i]["userName"].ToString();
+                userModel.IsActive = dt.Rows[i]["IsActive"].ToString();
+                userModel.Email = dt.Rows[i]["email"].ToString();
+                userModel.contentAccess = dt.Rows[i]["contentAcces"].ToString().Trim();
+                userModel.subcriptionStartDate = dt.Rows[i]["subscriptionStartDate"].ToString();
+                userModel.subscriptionEndDate = dt.Rows[i]["subscriptionEndDate"].ToString();
+                // dl.getFriends(userModel.UserId);
+
+        //userModel.listOfFriends.listOfMovies.Add(movieModel);
+        //listOfFriends.Add(userModel);
+
+            }
+            userModel.listOfFriends = getFriendsList(userModel);
+            userModel.listOfFavorites = getAllFavorites();
+            return userModel;
         }
 
         private List<UserModel> getFriendsList(UserModel UserModel)
@@ -122,6 +186,36 @@ namespace WebApplication1.Controllers
             }
 
             return movieListModel;
+        }
+
+        private ComicList getAllComics()
+        {
+            ComicList comicListModel = new ComicList();
+            comicListModel.listOfComics = new List<Comic>();
+            comicListModel.listOfGenres = new List<GenreModel>();
+
+            DataLayer dl = new DataLayer();
+            DataTable dt = dl.getAllComics();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                Comic comicModel = new Comic();
+                comicModel.comicID = int.Parse(dt.Rows[i]["comicID"].ToString());
+                comicModel.comicName = dt.Rows[i]["comicName"].ToString();
+                comicModel.comicGenreID = int.Parse(dt.Rows[i]["comicGenreID"].ToString());
+                comicModel.comicImageName = dt.Rows[i]["movieImageName"].ToString();
+                comicListModel.listOfComics.Add(comicModel);
+            }
+
+            DataTable dt3 = dl.getGenreNames();
+            for (int i = 0; i < dt3.Rows.Count; i++)
+            {
+                GenreModel genreModel = new GenreModel();
+                genreModel.genreName = dt3.Rows[i]["genreName"].ToString();
+                genreModel.movieGenreID = int.Parse(dt3.Rows[i]["genreID"].ToString());
+                comicListModel.listOfGenres.Add(genreModel);
+            }
+
+            return comicListModel;
         }
 
         public FavoritesList getAllFavorites()
@@ -277,14 +371,26 @@ namespace WebApplication1.Controllers
             return View("LogOut");
         }
 
-        public IActionResult Browse()
+        public IActionResult Browse(string id)
         {
             DataLayer dl = new DataLayer();
+            Browser browserModel = new Browser();
             MovieList MovieListModel = new MovieList();
+            ComicList ComicListModel = new ComicList();
             MovieListModel = getAllMovies();
+            ComicListModel = getAllComics();
+            browserModel.listOfComics = ComicListModel;
+            browserModel.listOfMovies = MovieListModel;
+            browserModel.autoPlay = MovieListModel.autoPlay;
+            browserModel.browserContentSelection = id;
             //UserModel.listOfMovies = getAllMovies();
-            return View("Browse", MovieListModel);
+            return View("Browse", browserModel);
 
+        }
+
+        public IActionResult Search()
+        {
+            return View("SearchView");
         }
 
         public IActionResult GoToGenre(string genre)

@@ -29,13 +29,18 @@ namespace WebApplication1.Models
         [Required]
         public int PaymentMethod { get; set; }
 
-        public List<SelectListItem> PayMethodList {get; set;}
+        public List<SelectListItem> PayMethodList { get; set; }
 
         public MovieList listOfMovies { get; set; }
 
         public FavoritesList listOfFavorites { get; set; }
 
         public List<UserModel> listOfFriends { get; set; }
-        
+
+        public string contentAccess { get; set; }
+
+        public string subcriptionStartDate { get; set; }
+
+        public string subscriptionEndDate { get; set; }
     }
 }

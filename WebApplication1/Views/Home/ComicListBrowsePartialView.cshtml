@@ -1,0 +1,43 @@
+﻿@model WebApplication1.Models.Browser
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<input type="hidden" id="urlLink" />
+<input type="hidden" id="movieName" />
+<input type="hidden" id="autoPlaySetting" />
+<div align="center">
+
+    <div id="dialog" title="Trailer">
+        <form asp-action="SaveToFavorites" asp-controller="Home" method="post">
+            @Html.HiddenFor(m => m.listOfComics.listOfComics.ElementAt(0).comicID, new { id = "comicIDHidden" })
+            <input type="button" id="closeButton" value="Close" />
+
+            <input type="submit" id="addToFavorites" value="Add To Favorites" />
+
+            <input type="button" id="playMovieButton" value="Play Movie" />
+
+        </form>
+    </div>
+
+    <div id="dialogMovie" title="Movie">
+    </div>
+    @for (int v = 0; v < Model.listOfComics.listOfGenres.Count; v++)
+    {
+        <table id="movieTable">
+            <tr>
+                <td><h1>@Html.DisplayFor(x => x.listOfComics.listOfGenres.ElementAt(v).genreName)</h1></td>
+            </tr>
+            <tr>
+                @for (int i = 0; i < Model.listOfComics.listOfComics.Count; i++)
+                {
+                    if (Model.listOfComics.listOfComics[i].comicGenreID == Model.listOfComics.listOfGenres[v].movieGenreID)
+                    {
+                        <td style="height:auto; max-width:300px;overflow:hidden; padding:25px; margin:75px; " class="a" onclick="openit('', '@Model.listOfComics.listOfComics.ElementAt(i).comicName', '@Model.listOfComics.listOfComics.ElementAt(i).comicID', '@Model.autoPlay')"><img src="~/images/@Model.listOfComics.listOfComics.ElementAt(i).comicImageName" /></td>
+                    }
+
+                }
+            </tr>
+        </table>
+    }
+</div>

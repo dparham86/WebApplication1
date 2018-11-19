@@ -1,4 +1,4 @@
-﻿@model WebApplication1.Models.MovieList
+﻿@model WebApplication1.Models.Browser
 
 @{
     Layout = null;
@@ -158,7 +158,6 @@
                         <li><a asp-area="" asp-controller="Home" asp-action="Settings">Settings</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="AccountManagement">Account Management</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="LogOut">Log Out</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Theatre"></a>Theatre</li>
                         <li><a asp-area="" asp-controller="Home" asp-action="LogOut"></a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="LogOut"></a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="LogOut"></a></li>
@@ -175,59 +174,14 @@
             </form>
         </div>
     </nav>
-    <input type="hidden" id="urlLink" />
-    <input type="hidden" id="movieName" />
-    <input type="hidden" id="autoPlaySetting" />
-    <div align="center">
 
-        <div id="dialog" title="Trailer">
-            <form asp-action="SaveToFavorites" asp-controller="Home" method="post">
-                @Html.HiddenFor(m => m.listOfMovies.ElementAt(0).movieID, new { id = "movieIDHidden" })
-                <input type="button" id="closeButton" value="Close" />
-
-                <input type="button" id="trailerButton" value="Play Trailer" />
-
-                <input type="submit" id="addToFavorites" value="Add To Favorites" />
-
-                <input type="button" id="playMovieButton" value="Play Movie" />
-
-            </form>
-        </div>
-
-        <div id="dialogMovie" title="Movie">
-
-
-        </div>
-
-
-
-
-        @for (int v = 0; v < Model.listOfGenres.Count; v++)
-        {
-            <table id="movieTable">
-                <tr>
-                    <td><h1>@Html.DisplayFor(x => x.listOfGenres.ElementAt(v).genreName)</h1></td>
-
-
-                </tr>
-                <tr>
-
-                    @for (int i = 0; i < Model.listOfMovies.Count; i++)
-                    {
-                        if (Model.listOfMovies[i].movieGenreID == Model.listOfGenres[v].movieGenreID)
-                        {
-                            <td style="height:auto; max-width:300px;overflow:hidden; padding:25px; margin:75px; " class="a" onclick="openit('@Model.listOfMovies.ElementAt(i).MovieTrailerURL', '@Model.listOfMovies.ElementAt(i).movieName', '@Model.listOfMovies.ElementAt(i).movieID', '@Model.autoPlay')"><img src="~/images/@Model.listOfMovies.ElementAt(i).movieImageName" /></td>
-                        }
-
-                    }
-
-
-                </tr>
-            </table>
-
-        }
-
-    </div>
-
+    @if (Model.browserContentSelection == "Movie")
+    {
+    <div align="center"><partial name="~/Views/Home/MovieListBrowsePartialView.cshtml" /></div>
+    }
+    else
+    {
+<div align="center"><partial name="~/Views/Home/ComicListBrowsePartialView.cshtml" /></div>
+    }
 </body>
 </html>

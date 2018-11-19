@@ -1,0 +1,21 @@
+﻿@model WebApplication1.Models.UserModel
+@{
+    ViewData["Title"] = "ContentSelectionView";
+    Layout = null;
+}
+
+<h2>ContentSelectionView</h2>
+
+<div align="center">
+    <form asp-action="goToContentMainMenu" asp-controller="Home" method="post">
+        @Html.HiddenFor(x=>x.UserName)
+        @if (Model.contentAccess == "All")
+        {
+            <input type="submit" value="Video" name="buttonValueId" id="buttonValueId" />
+            <br />
+            <br />
+            <input type="submit" value="Comic" name="buttonValueId" id="buttonValueId"/>
+        }
+        </form>
+</div>
+
